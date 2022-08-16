@@ -1,6 +1,7 @@
 <template>
   <div>
     <rc-form
+      ref="form"
       :options="options"
       label-width="100px"
       @on-preview="handlePreview"
@@ -21,7 +22,7 @@
       <!-- 默认为scope -->
       <template #action="scope">
         <el-button type="primary" @click="submitForm(scope)">提交</el-button>
-        <el-button @click="resetForm(scope)">重置</el-button>
+        <el-button @click="resetForm">重置</el-button>
       </template>
     </rc-form>
   </div>
@@ -202,9 +203,10 @@ let options: FormOptions[] = [
   // 富文本编辑器
   {
     type: "editor",
-    value: "",
+    value: "111",
     prop: "desc",
     label: "描述",
+    placeholder: "请输入描述",
     rules: [
       {
         required: true,
@@ -245,8 +247,12 @@ const submitForm = (scope: Scope) => {
     }
   });
 };
-const resetForm = (scope: Scope) => {
-  scope.form.resetFields();
+
+let form = ref()
+const resetForm = () => {
+  // 这里就不能再调用组件原始提供的重置方法了
+  // scope.form.resetFields();
+  form.value.resetFields();
 };
 </script>
 

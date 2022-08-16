@@ -95,6 +95,8 @@ let model = ref<any>({});
 let rules = ref<any>({});
 // 表单的类型很复杂，需要从element-plus源码中拷贝FormInstance，这里暂且定义成any
 let form = ref<any>(null);
+// 记录富文本创建后editor实例
+let edit = ref();
 let props = defineProps({
   // 表单的配置项
   options: {
@@ -118,12 +120,44 @@ let initForm = () => {
       r[item.prop!] = item.rules;
       // 初始化富文本
       if (item.type === "editor") {
+        const editor = new E("#editor");
+        // 加个感叹号，表示该属性一定是符合条件的
+        editor.config.placeholder = item.placeholder!;
+        editor.create();
+        // 初始化富文本的内容
+        editor.txt.html(item.value);
+        // 动态获取富文本的输入内容
+        editor.config.onchange = (newValue: string) => {
+          // console.log(newValue);
+          model.value[item.prop!] = newValue;
+        };
+        // 记录editor，这样在别的地方就可以使用
+        edit.value = editor;
       }
     });
     model.value = cloneDeep(m);
     rules.value = cloneDeep(r);
   }
 };
+
+// 重置表单的方法
+// 为了能够自动一键清空自定义的上传组件和富文本组件的值
+let resetFields = () => {
+  // 重置element-plus表单
+  form.value!.resetFields();
+  // 重置富文本编辑器的内容
+  // 获取富文本的配置项
+  if (props.options && props.options.length) {
+    let editorItem = props.options.find((item) => item.type === "editor")!;
+    edit.value.txt.html(editorItem.value);
+  }
+};
+
+// 分发方法
+// vue3新提供的，作用就是把组件的属性和方法给分发出去
+defineExpose({
+  resetFields
+})
 
 onMounted(() => {
   initForm();
@@ -164,5 +198,4 @@ let onExceed = (files: any, fileList: FileList) => {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

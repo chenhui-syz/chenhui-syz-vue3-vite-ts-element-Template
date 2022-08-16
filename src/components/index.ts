@@ -1,9 +1,10 @@
 import { App } from "vue";
 import chooseIcon from "./chooseIcon";
 import form from "./form";
+import modalForm from "./modalForm";
 
 // 将组件都添加到这个数组中
-const components = [chooseIcon, form];
+const components = [chooseIcon, form, modalForm];
 
 export default {
   // 循环数组，进行组件的全局注册
