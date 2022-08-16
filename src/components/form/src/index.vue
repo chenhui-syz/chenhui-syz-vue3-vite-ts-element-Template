@@ -153,11 +153,27 @@ let resetFields = () => {
   }
 };
 
+// 表单验证，包装一下，用于分发出去
+let validate = () => {
+  return form.value!.validate;
+};
+
+// 获取表单数据
+let getFormDate = ()=>{
+  // model就是当前表单的数据，注意一定不要把这个数据分发出去，而是分发一个获得表单数据的方法
+  // 直接分发model，只会拿到表单的初始值，而不是最新的
+  return model.value
+}
+
 // 分发方法
+// vue2可以通过ref拿到组件实例，并且调用组件上的属性和方法，但是vue3要使用defineExpose分发出去才能使用
 // vue3新提供的，作用就是把组件的属性和方法给分发出去
+// vue3对组件的优化和保护，如果不通过defineExpose进行暴露，则通过ref拿到的组件实例是空
 defineExpose({
-  resetFields
-})
+  resetFields,
+  validate,
+  getFormDate
+});
 
 onMounted(() => {
   initForm();
