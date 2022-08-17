@@ -27,6 +27,11 @@ const routes: RouteRecordRaw[] = [
         // 路由懒加载
         component: () => import("../views/modalForm/index.vue"),
       },
+      {
+        path: "/table",
+        // 路由懒加载
+        component: () => import("../views/table/index.vue"),
+      },
     ],
   },
 ];

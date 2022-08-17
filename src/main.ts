@@ -7,6 +7,8 @@ import "element-plus/dist/index.css";
 
 import { toLine } from "./utils/index";
 
+import './mock'
+
 // 全局引用自己封装的组件
 import rcUI from './components/index'
 // 如果是按需引入呢？那么在这里直接引用单个的组件就行了，同样也在下面use链式调用就可以了
