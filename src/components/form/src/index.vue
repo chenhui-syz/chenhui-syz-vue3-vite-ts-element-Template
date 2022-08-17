@@ -189,7 +189,7 @@ let onRemove = (file: File, fileList: FileList) => {
 };
 let onSuccess = (response: File, file: File, fileList: FileList) => {
   // 上传图片成功，给表单上传项赋值
-  let uploadItem = props.options?.find((items) => items.type === "upload");
+  let uploadItem = props.options!.find((items) => items.type === "upload");
   // 将返回数据统一先都怼进model对应的上传数据中
   model.value[uploadItem.prop!] = { response, file, fileList };
   emits("on-success", { response, file, fileList });

@@ -1,5 +1,16 @@
 <template>
-  <rc-table :data="tableData" :options="options" elementLoadingText="加载中...">
+  <rc-table
+    :data="tableData"
+    :options="options"
+    elementLoadingText="加载中..."
+    pagination
+    paginationFlexType="right"
+    :total="total"
+    @sizeChange="sizeChange"
+    @currentChange="currentChange"
+    :pageSize="pageSize"
+    :currentPage="current"
+  >
     <template #date="{ scope }">
       <el-icon-timer></el-icon-timer>
       {{ scope.row.date }}
@@ -23,8 +34,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { TableOptions } from "../../components/table/src/type";
+import axios from "axios";
 
 interface TableData {
   date: string;
@@ -63,6 +75,34 @@ let tableData = ref<TableData[]>([]);
 let current = ref<number>(1);
 // 每页数量
 let pageSize = ref<number>(10);
+// 总数
+let total = ref<number>(0);
+
+let getData = () => {
+  axios
+    .post("/api/list", {
+      current: current.value,
+      pageSize: pageSize.value,
+    })
+    .then((res: any) => {
+      console.log(res.data);
+      tableData.value = res.data.data.rows;
+      total.value = res.data.data.total;
+    });
+};
+
+onMounted(() => {
+  getData();
+});
+
+let sizeChange = (val: number) => {
+  pageSize.value = val;
+  getData();
+};
+let currentChange = (val: number) => {
+  current.value = val;
+  getData();
+};
 
 // 表格配置
 let options: TableOptions[] = [
