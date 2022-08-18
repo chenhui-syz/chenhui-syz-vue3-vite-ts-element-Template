@@ -5,6 +5,11 @@ import modalForm from "./modalForm";
 import table from "./table";
 import calendar from "./calendar";
 
+// 引入样式文件夹
+import './styles/base.scss'
+import './styles/ui.scss'
+
+
 // 将组件都添加到这个数组中
 const components = [chooseIcon, form, modalForm, table, calendar];
 

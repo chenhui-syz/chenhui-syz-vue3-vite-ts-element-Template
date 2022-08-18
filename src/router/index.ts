@@ -32,6 +32,11 @@ const routes: RouteRecordRaw[] = [
         // 路由懒加载
         component: () => import("../views/table/index.vue"),
       },
+      {
+        path: "/calendar",
+        // 路由懒加载
+        component: () => import("../views/calendar/index.vue"),
+      },
     ],
   },
 ];
